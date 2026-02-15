@@ -1,50 +1,73 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
-    <title>AgroVision - Register</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <meta charset="UTF-8">
+    <title>AgroVision | Register</title>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
-
 <body>
 
-<div class="container">
+<div class="auth-container">
+    <h2>Register - AgroVision</h2>
 
-    <h1>🌱 AgroVision</h1>
-    <h2>User Registration</h2>
-
-    <!-- SUCCESS MESSAGE -->
-    <div th:if="${successMessage}" class="success-msg">
-        <p th:text="${successMessage}"></p>
-    </div>
-
-    <!-- ERROR MESSAGE -->
-    <div th:if="${errorMessage}" class="error-msg">
-        <p th:text="${errorMessage}"></p>
-    </div>
-
-    <form th:action="@{/register}" method="post">
-
-        <label>Name</label>
-        <input type="text" name="name" placeholder="Enter full name" required>
-
-        <label>Email</label>
-        <input type="email" name="email" placeholder="Enter email" required>
-
-        <label>Password</label>
-        <input type="password" name="password" placeholder="Enter password" required>
-
-        <label>Phone</label>
-        <input type="text" name="phone" placeholder="Enter phone number" required>
+    <form id="registerForm">
+        <input type="text" id="name" placeholder="Full Name" required>
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <input type="text" id="phone" placeholder="Phone Number" required>
 
         <button type="submit">Register</button>
     </form>
 
-    <p class="link-text">
-        Already have an account?
-        <a th:href="@{/login}">Login</a>
-    </p>
+    <p id="message"></p>
 
+    <p>Already have an account?
+        <a href="login.html">Login</a>
+    </p>
 </div>
+
+<script>
+document.getElementById("registerForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const data = {
+        name: document.getElementById("name").value,
+        email: document.getElementById("email").value,
+        password: document.getElementById("password").value,
+        phone: document.getElementById("phone").value
+    };
+
+    try {
+        const response = await fetch("http://localhost:8081/api/auth/register", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        });
+
+        const message = await response.text();
+
+        if (response.ok) {
+            document.getElementById("message").style.color = "green";
+            document.getElementById("message").innerText = message;
+
+            // redirect after success
+            setTimeout(() => {
+                window.location.href = "login.html";
+            }, 1500);
+
+        } else {
+            document.getElementById("message").style.color = "red";
+            document.getElementById("message").innerText = message;
+        }
+
+    } catch (error) {
+        document.getElementById("message").style.color = "red";
+        document.getElementById("message").innerText = "Server error. Try again.";
+    }
+});
+</script>
 
 </body>
 </html>

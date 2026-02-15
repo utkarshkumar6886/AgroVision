@@ -1,12 +1,15 @@
 package com.agrovision.service;
 
-import java.util.Optional;
-
+import com.agrovision.dto.ApiResponse;
+import com.agrovision.dto.LoginRequest;
+import com.agrovision.dto.RegisterRequest;
+import com.agrovision.entity.User;
+import com.agrovision.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.agrovision.entity.User;
-import com.agrovision.repository.UserRepository;
+import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -14,37 +17,45 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    // Register new user
-    public User registerUser(User user) {
-        try {
-            return userRepository.save(user);
-        } catch (Exception e) {
-            throw new RuntimeException("Error while registering user: " + e.getMessage());
+    // ---------------- REGISTER USER ----------------
+    public ApiResponse registerUser(RegisterRequest request) {
+
+        // Check if email already exists
+        if (userRepository.existsByEmail(request.getEmail())) {
+            return new ApiResponse(false, "Email already registered");
         }
+
+        // Create new user
+        User user = new User();
+        user.setName(request.getName());
+        user.setEmail(request.getEmail());
+        user.setPassword(request.getPassword());
+        user.setPhone(request.getPhone());
+        user.setRole("USER");
+        user.setStatus("ACTIVE");
+        user.setRegistrationDate(LocalDateTime.now());
+
+        userRepository.save(user);
+
+        return new ApiResponse(true, "User registered successfully");
     }
 
-    // Find user by email
-    public Optional<User> findByEmail(String email) {
-        try {
-            return userRepository.findByEmail(email);
-        } catch (Exception e) {
-            throw new RuntimeException("Error fetching user by email: " + e.getMessage());
+    // ---------------- LOGIN USER ----------------
+    public ApiResponse loginUser(LoginRequest request) {
+
+        Optional<User> optionalUser = userRepository.findByEmail(request.getEmail());
+
+        if (optionalUser.isEmpty()) {
+            return new ApiResponse(false, "User not found");
         }
-    }
 
-    // Login validation
-    public Optional<User> loginUser(String email, String password) {
-        try {
-            Optional<User> user = userRepository.findByEmail(email);
+        User user = optionalUser.get();
 
-            if (user.isPresent() && user.get().getPassword().equals(password)) {
-                return user;
-            }
-
-            return Optional.empty();
-
-        } catch (Exception e) {
-            throw new RuntimeException("Login failed: " + e.getMessage());
+        // Check password
+        if (!user.getPassword().equals(request.getPassword())) {
+            return new ApiResponse(false, "Invalid password");
         }
+
+        return new ApiResponse(true, "Login successful", user);
     }
 }
