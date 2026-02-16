@@ -1,6 +1,5 @@
 package com.agrovision.service;
 
-import com.agrovision.dto.ApiResponse;
 import com.agrovision.dto.LoginRequest;
 import com.agrovision.dto.RegisterRequest;
 import com.agrovision.entity.User;
@@ -9,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -17,45 +15,47 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    // ---------------- REGISTER USER ----------------
-    public ApiResponse registerUser(RegisterRequest request) {
 
-        // Check if email already exists
-        if (userRepository.existsByEmail(request.getEmail())) {
-            return new ApiResponse(false, "Email already registered");
-        }
+    /* ================= CHECK EMAIL EXISTS ================= */
 
-        // Create new user
+    public boolean emailExists(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
+
+    /* ================= REGISTER USER ================= */
+
+    public User registerUser(RegisterRequest request) {
+
         User user = new User();
         user.setName(request.getName());
         user.setEmail(request.getEmail());
         user.setPassword(request.getPassword());
         user.setPhone(request.getPhone());
+
         user.setRole("USER");
         user.setStatus("ACTIVE");
         user.setRegistrationDate(LocalDateTime.now());
 
-        userRepository.save(user);
-
-        return new ApiResponse(true, "User registered successfully");
+        return userRepository.save(user);
     }
 
-    // ---------------- LOGIN USER ----------------
-    public ApiResponse loginUser(LoginRequest request) {
 
-        Optional<User> optionalUser = userRepository.findByEmail(request.getEmail());
+    /* ================= LOGIN USER ================= */
 
-        if (optionalUser.isEmpty()) {
-            return new ApiResponse(false, "User not found");
+    public User loginUser(LoginRequest request) {
+
+        User user = userRepository.findByEmail(request.getEmail());
+
+        if (user == null) {
+            return null;
         }
 
-        User user = optionalUser.get();
-
-        // Check password
+        // password match check
         if (!user.getPassword().equals(request.getPassword())) {
-            return new ApiResponse(false, "Invalid password");
+            return null;
         }
 
-        return new ApiResponse(true, "Login successful", user);
+        return user;
     }
 }

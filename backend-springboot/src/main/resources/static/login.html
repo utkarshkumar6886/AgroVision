@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login | AgroVision</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- LOGO -->
+    <img src="/images/logo.png" class="logo" alt="AgroVision Logo">
+
+    <!-- APP TITLE -->
+    <div class="app-title">AgroVision</div>
+    <div class="page-subtitle">AI-Based Plant Disease Detection</div>
+
+    <!-- LOGIN FORM -->
+    <form onsubmit="loginUser(event)">
+
+        <input type="email"
+               id="email"
+               placeholder="Enter email"
+               required>
+
+        <input type="password"
+               id="password"
+               placeholder="Enter password"
+               required>
+
+        <button type="submit">Login</button>
+
+    </form>
+
+    <!-- REGISTER LINK -->
+	<p class="auth-switch">
+	    New user?
+	    <a href="/register.html">Register here</a>
+	</p>
+
+
+</div>
+
+<!-- JS -->
+<script src="/js/api.js"></script>
+<script src="/js/auth.js"></script>
+
+</body>
+</html>

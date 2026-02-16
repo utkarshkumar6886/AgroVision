@@ -11,43 +11,72 @@ public class Detection {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long detectionId;
 
-    private String imagePath;
-    private Double confidenceScore;
-    private String severityLevel;
-    private String aiPredictionLabel;
-
-    private LocalDateTime uploadTime;
-
+    // Relation with User
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "disease_id")
-    private Disease disease;
+    @Column(name = "image_name")
+    private String imageName;
 
-    public Detection() {}
+    @Column(name = "image_path")
+    private String imagePath;
 
-    public Long getDetectionId() { return detectionId; }
+    @Column(name = "upload_time")
+    private LocalDateTime uploadTime;
 
-    public String getImagePath() { return imagePath; }
-    public void setImagePath(String imagePath) { this.imagePath = imagePath; }
+    @Column(name = "status")
+    private String status;
 
-    public Double getConfidenceScore() { return confidenceScore; }
-    public void setConfidenceScore(Double confidenceScore) { this.confidenceScore = confidenceScore; }
+    // =========================
+    // GETTERS AND SETTERS
+    // =========================
 
-    public String getSeverityLevel() { return severityLevel; }
-    public void setSeverityLevel(String severityLevel) { this.severityLevel = severityLevel; }
+    public Long getDetectionId() {
+        return detectionId;
+    }
 
-    public String getAiPredictionLabel() { return aiPredictionLabel; }
-    public void setAiPredictionLabel(String aiPredictionLabel) { this.aiPredictionLabel = aiPredictionLabel; }
+    public void setDetectionId(Long detectionId) {
+        this.detectionId = detectionId;
+    }
 
-    public LocalDateTime getUploadTime() { return uploadTime; }
-    public void setUploadTime(LocalDateTime uploadTime) { this.uploadTime = uploadTime; }
+    public User getUser() {
+        return user;
+    }
 
-    public User getUser() { return user; }
-    public void setUser(User user) { this.user = user; }
+    public void setUser(User user) {
+        this.user = user;
+    }
 
-    public Disease getDisease() { return disease; }
-    public void setDisease(Disease disease) { this.disease = disease; }
+    public String getImageName() {
+        return imageName;
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
+    public LocalDateTime getUploadTime() {
+        return uploadTime;
+    }
+
+    public void setUploadTime(LocalDateTime uploadTime) {
+        this.uploadTime = uploadTime;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }

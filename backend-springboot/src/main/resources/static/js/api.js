@@ -1,28 +1,36 @@
-// Base API URL (Spring Boot backend)
-const BASE_URL = "http://localhost:8081/api";
+/* ==========================================
+   AgroVision - Common API Connector
+   Used by: auth.js, upload.js, history.js
+   ========================================== */
 
-// Generic API call function
-async function apiCall(endpoint, method = "GET", data = null) {
+const API_BASE_URL = "http://localhost:8081/api";
+
+/* Generic POST request */
+async function postRequest(endpoint, data) {
     try {
-        const options = {
-            method: method,
+        const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+            method: "POST",
             headers: {
                 "Content-Type": "application/json"
-            }
-        };
+            },
+            body: JSON.stringify(data)
+        });
 
-        // Attach body only for POST/PUT
-        if (data) {
-            options.body = JSON.stringify(data);
-        }
-
-        const response = await fetch(BASE_URL + endpoint, options);
-
-        const result = await response.json();
-        return result;
-
+        return await response.json();
     } catch (error) {
-        console.error("API Error:", error);
+        return {
+            success: false,
+            message: "Server error. Please try again."
+        };
+    }
+}
+
+/* Generic GET request */
+async function getRequest(endpoint) {
+    try {
+        const response = await fetch(`${API_BASE_URL}${endpoint}`);
+        return await response.json();
+    } catch (error) {
         return {
             success: false,
             message: "Server error. Please try again."

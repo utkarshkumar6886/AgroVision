@@ -1,56 +1,38 @@
 package com.agrovision.controller;
 
+import com.agrovision.dto.ApiResponse;
+import com.agrovision.dto.DetectionRequest;
 import com.agrovision.entity.Detection;
 import com.agrovision.service.DetectionService;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/detection")
+@CrossOrigin(origins = "*")
 public class DetectionController {
 
     @Autowired
     private DetectionService detectionService;
 
-    // SAVE DETECTION RESULT
-    @PostMapping("/save")
-    public Detection saveDetection(
-            @RequestParam Long userId,
-            @RequestParam Long diseaseId,
-            @RequestParam String imagePath,
-            @RequestParam Double confidenceScore,
-            @RequestParam String severityLevel,
-            @RequestParam String aiPredictionLabel) {
+    /**
+     * Upload image detection record
+     */
+    @PostMapping("/upload")
+    public ResponseEntity<ApiResponse> uploadDetection(@RequestBody DetectionRequest request) {
 
-        return detectionService.saveDetection(
-                userId,
-                diseaseId,
-                imagePath,
-                confidenceScore,
-                severityLevel,
-                aiPredictionLabel
-        );
-    }
+        try {
+            Detection detection = detectionService.saveDetection(request);
 
-    // GET DETECTIONS BY USER
-    @GetMapping("/user/{userId}")
-    public List<Detection> getUserDetections(@PathVariable Long userId) {
-        return detectionService.getDetectionsByUser(userId);
-    }
+            return ResponseEntity.ok(
+                    new ApiResponse(true, "Image uploaded successfully", detection)
+            );
 
-    // GET DETECTION BY ID
-    @GetMapping("/{id}")
-    public Detection getDetectionById(@PathVariable Long id) {
-        return detectionService.getDetectionById(id);
-    }
+        } catch (Exception e) {
 
-    // DELETE DETECTION
-    @DeleteMapping("/delete/{id}")
-    public String deleteDetection(@PathVariable Long id) {
-        detectionService.deleteDetection(id);
-        return "Detection record deleted successfully";
+            return ResponseEntity.badRequest()
+                    .body(new ApiResponse(false, e.getMessage(), null));
+        }
     }
 }

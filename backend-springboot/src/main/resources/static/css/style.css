@@ -1,128 +1,147 @@
-/* Reset */
+/* ==========================================
+   AgroVision Global UI Theme
+   Used by: login, register, upload, result, history
+   ========================================== */
+
+/* RESET */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Background */
+/* BODY BACKGROUND */
 body {
-    background: linear-gradient(to right, #dfeeea, #f6fbf9);
+    background: linear-gradient(135deg, #dfeee7, #c7dbd0);
     min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-/* Center container */
+/* MAIN CONTAINER */
 .container {
     width: 100%;
-    max-width: 600px;
-    margin: 60px auto;
+    max-width: 500px;
     background: #ffffff;
-    padding: 30px 40px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
-}
-
-/* Headings */
-.container h2 {
+    padding: 30px;
+    border-radius: 14px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
     text-align: center;
-    margin-bottom: 20px;
-    color: #1f3c2e;
 }
 
-/* Labels */
-label {
-    display: block;
-    margin-top: 15px;
-    margin-bottom: 5px;
-    font-weight: 600;
-    color: #333;
+/* LOGO */
+.logo {
+    width: 60px;
+    margin-bottom: 10px;
 }
 
-/* Input fields */
-input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    outline: none;
+/* TITLE */
+.app-title {
+    font-size: 26px;
+    font-weight: 700;
+    color: #2e7d32;
+}
+
+.page-subtitle {
     font-size: 14px;
-    transition: 0.3s;
+    color: #666;
+    margin-bottom: 25px;
 }
 
-input:focus {
-    border-color: #2e8b57;
-    box-shadow: 0px 0px 5px rgba(46,139,87,0.3);
+/* INPUT FIELDS */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="file"] {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
 }
 
-/* Buttons */
+/* BUTTON */
 button {
     width: 100%;
     padding: 12px;
-    margin-top: 20px;
-    background-color: #2e8b57;
+    margin-top: 15px;
+    background: #2e7d32;
+    color: white;
     border: none;
-    border-radius: 6px;
-    color: #fff;
+    border-radius: 8px;
     font-size: 16px;
     cursor: pointer;
     transition: 0.3s;
 }
 
 button:hover {
-    background-color: #256f45;
+    background: #1b5e20;
 }
 
-/* Links */
-.form-footer {
+/* LINK */
+
+.auth-switch {
     text-align: center;
-    margin-top: 15px;
+    margin-top: 14px;
+    font-size: 14px;
+    color: #444;
 }
 
-.form-footer a {
-    color: #2e8b57;
+.auth-switch a {
+    color: #2e7d32;
     text-decoration: none;
     font-weight: 600;
+    margin-left: 4px;
+    display: inline;
 }
 
-.form-footer a:hover {
+.auth-switch a:hover {
     text-decoration: underline;
 }
 
-/* Success / Error messages */
-.message-success {
-    background: #e6f7ec;
-    color: #1c7c3c;
-    padding: 10px;
-    border-radius: 6px;
-    margin-bottom: 10px;
+/* ALERT MESSAGES */
+.success {
+    color: #2e7d32;
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.error {
+    color: red;
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+/* TABLE (HISTORY PAGE) */
+table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+}
+
+table th, table td {
+    padding: 12px;
+    border: 1px solid #ddd;
     text-align: center;
 }
 
-.message-error {
-    background: #fdecea;
-    color: #c0392b;
-    padding: 10px;
-    border-radius: 6px;
-    margin-bottom: 10px;
-    text-align: center;
-}
-.success-msg {
-    background-color: #d4edda;
-    color: #155724;
-    padding: 12px;
-    border-radius: 6px;
-    margin-bottom: 15px;
-    text-align: center;
-    font-weight: 500;
+table th {
+    background: #2e7d32;
+    color: white;
 }
 
-.error-msg {
-    background-color: #f8d7da;
-    color: #721c24;
-    padding: 12px;
-    border-radius: 6px;
-    margin-bottom: 15px;
-    text-align: center;
-    font-weight: 500;
+/* UPLOAD PAGE */
+.upload-box {
+    margin-top: 20px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+    .container {
+        margin: 20px;
+        padding: 20px;
+    }
 }
